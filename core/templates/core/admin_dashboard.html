@@ -1,0 +1,70 @@
+<h1>📋 Admin Dashboard</h1>
+
+<h2>👩‍🎓 Students</h2>
+<table border="1">
+    <tr>
+        <th>Name</th><th>Email</th><th>WhatsApp</th><th>Approved</th><th>Action</th>
+    </tr>
+    {% for student in students %}
+    <tr>
+        <td>{{ student.name }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.whatsapp }}</td>
+        <td>{{ student.is_approved }}</td>
+        <td>
+            <a href="{% url 'approve_student' student.id %}">
+                {% if student.is_approved %}❌ Unapprove{% else %}✅ Approve{% endif %}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>📄 Tasks</h2>
+<table border="1">
+    <tr>
+        <th>Title</th><th>Due Date</th><th>Content</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>{{ task.title }}</td>
+        <td>{{ task.due_date }}</td>
+        <td>{{ task.content|truncatechars:100 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Recent Tasks</h2>
+<ul>
+    {% for task in tasks %}
+        <li><strong>{{ task.title }}</strong> — due {{ task.due_date }}</li>
+    {% empty %}
+        <li>No tasks added yet.</li>
+    {% endfor %}
+</ul>
+
+<form method="get">
+    <label>Urgency:
+        <select name="urgency">
+            <option value="" {% if not request.GET.urgency %}selected{% endif %}>All</option>
+            <option value="high" {% if request.GET.urgency == 'high' %}selected{% endif %}>High</option>
+            <option value="medium" {% if request.GET.urgency == 'medium' %}selected{% endif %}>Medium</option>
+            <option value="low" {% if request.GET.urgency == 'low' %}selected{% endif %}>Low</option>
+        </select>
+    </label>
+
+    <label>
+        <input type="checkbox" name="overdue" value="1" {% if show_overdue %}checked{% endif %}>
+        Show only overdue tasks
+    </label>
+
+    <label>
+        <input type="checkbox" name="due_today" value="1" {% if show_today %}checked{% endif %}>
+        Show tasks due today
+    </label>
+
+    <button type="submit">Filter</button>
+</form>
+
+
+  

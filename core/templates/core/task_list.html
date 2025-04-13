@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Tasks</title>
+    <style>
+        body { font-family: Arial; padding: 30px; background: #f2f2f2; }
+        .task { background: #fff; padding: 20px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+        h2 { margin-bottom: 5px; }
+        .due { color: gray; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>All Uploaded Tasks</h1>
+    {% for task in tasks %}
+        <div class="task">
+            <h2>{{ task.title }}</h2>
+            <p>{{ task.content }}</p>
+            <p class="due">Due: {{ task.due_date }}</p>
+        </div>
+    {% empty %}
+        <p>No tasks uploaded yet.</p>
+    {% endfor %}
+</body>
+</html>
