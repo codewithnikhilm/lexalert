@@ -62,6 +62,10 @@ def task_list(request):
     tasks = Task.objects.all().order_by('due_date')
     return render(request, 'core/task_list.html', {'tasks': tasks})
 
+@login_required
+def admin_dashboard(request):
+    return render(request, 'core/dashboard.html')
+
 @staff_member_required
 def admin_dashboard(request):
     students = Student.objects.all()
