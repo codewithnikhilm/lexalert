@@ -7,6 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required  # Only 
 from django.utils import timezone
 from datetime import timedelta
 from django.core.mail import send_mass_mail
+from django.http import HttpResponse
 
 def student_signup(request):
     if request.method == 'POST':
@@ -136,3 +137,6 @@ def add_task(request):
     else:
         form = TaskForm()
     return render(request, 'add_task.html', {'form': form})
+
+def home(request):
+    return HttpResponse("Welcome to LexAlert – your law school task assistant!")
