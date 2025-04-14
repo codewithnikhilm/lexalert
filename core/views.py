@@ -8,6 +8,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.core.mail import send_mass_mail
 from django.http import HttpResponse
+from .models import Student  # assuming your model is named Student
 
 def student_signup(request):
     if request.method == 'POST':
@@ -139,4 +140,32 @@ def add_task(request):
     return render(request, 'add_task.html', {'form': form})
 
 def home(request):
-    return HttpResponse("Welcome to LexAlert – your law school task assistant!")
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        student_class = request.POST.get('student_class')
+        batch_year = request.POST.get('batch_year')
+
+        # Save to DB
+        Student.objects.create(
+            full_name=full_name,
+            email=email,
+            phone=phone,
+            student_class=student_class,
+            batch_year=batch_year,
+            is_approved=False
+        )
+
+        # Send confirmation email
+        send_mail(
+            'LexAlert Subscription Received',
+            'Thank you for subscribing! Our admin will contact you within 24 hours for verification.',
+            'no-reply@lexalert.com',
+            [email],
+            fail_silently=True,
+        )
+
+        return render(request, 'core/home.html', {'success': True})
+
+    return render(request, 'core/home.html')

@@ -9,5 +9,5 @@ urlpatterns = [
     path('tasks/', views.task_list, name='task_list'),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('approve-student/<int:student_id>/', views.approve_student, name='approve_student'),
-    path('', home, name='home'),
+    path('', views.home, name='home'),
 ]
